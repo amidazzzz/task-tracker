@@ -1,4 +1,7 @@
 package org.amida.backend.exception;
 
-public class EmailAlreadyTakenException {
+public class EmailAlreadyTakenException extends RuntimeException{
+    public EmailAlreadyTakenException(String message){
+        super(message);
+    }
 }
