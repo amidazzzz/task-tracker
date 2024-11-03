@@ -1,4 +1,6 @@
 package org.amida.backend.response;
 
-public class ApiResponse {
-}
+import lombok.Builder;
+
+@Builder
+public record ApiResponse(String message, boolean success, String token){}
