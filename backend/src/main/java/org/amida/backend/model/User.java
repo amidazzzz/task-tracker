@@ -32,4 +32,6 @@ public class User {
 
     @OneToMany(mappedBy = "owner")
     private List<Task> tasks;
+
+    // as
 }
