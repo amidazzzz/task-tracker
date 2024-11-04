@@ -13,11 +13,8 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     private final UserService userService;
-    private final JwtService jwtService;
-    private final PasswordEncoder passwordEncoder;
 
-
-    public void signUp(SignUpRequest request){
+    public ApiResponse signUp(SignUpRequest request){
         User user = User.builder()
                 .username(request.getUsername())
                 .email(request.getEmail())
@@ -25,6 +22,12 @@ public class AuthService {
                 .build();
 
         userService.registerUser(user);
+
+        return ApiResponse.builder()
+                .success(true)
+                .message(String.format("The user %s register successfully",
+                        request.getUsername()))
+                .build();
     }
 
     public ApiResponse singIn(SignInRequest request){
