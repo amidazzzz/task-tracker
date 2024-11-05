@@ -1,4 +1,7 @@
 package org.amida.backend.response;
 
-public class TaskResponse {
+import lombok.Builder;
+
+@Builder
+public record TaskResponse(String message, boolean success) {
 }
