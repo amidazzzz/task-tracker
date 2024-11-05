@@ -27,25 +27,24 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final UserRepository userRepository;
     private final JwtAuthFilter jwtAuthFilter;
+    private final UserDetailsServiceImpl userDetailsService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new UserDetailsServiceImpl(userRepository);
-    }
+//    @Bean
+//    public UserDetailsService userDetailsService() { // refactor: remove UserDetailsService impl Bean
+//        return new UserDetailsServiceImpl(userRepository);
+//    }
 
     @Bean
-    public AuthenticationManager authenticationManager(UserDetailsService userDetailsService,
-                                                       PasswordEncoder passwordEncoder) {
+    public AuthenticationManager authenticationManager() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder);
+        authProvider.setUserDetailsService(userDetailsService); // asd
+        authProvider.setPasswordEncoder(passwordEncoder());
 
         return new ProviderManager(authProvider);
     }
@@ -53,9 +52,9 @@ public class SecurityConfig {
 
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:8080"));
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
-        configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
+        configuration.setAllowedOrigins(List.of("*"));
+        configuration.setAllowedMethods(List.of("*"));
+        configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
@@ -66,10 +65,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/api/v1/auth/register", "/api/v1/auth/login"))
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/api/v1/auth/register", "/api/v1/auth/login",
+                        "/api/v1/task")) // asd
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(HttpMethod.POST,"/api/v1/auth/*").permitAll()
-                        .anyRequest().permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/task").authenticated() // ref
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
