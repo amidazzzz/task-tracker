@@ -4,7 +4,9 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -15,13 +17,15 @@ import java.util.Date;
 import java.util.Map;
 import java.util.function.Function;
 
+@Slf4j
 @Service
+@PropertySource("compose/")
 public class JwtService {
 
-    @Value("${jwt.secret}")
+    @Value("${JWT_SECRET}")
     private String jwtSecretKey;
 
-    @Value("${jwt.lifetime}")
+    @Value("${JWT_LIFETIME}")
     private Duration jwtExpiration;
 
     public String extractUsername(String token) {
@@ -60,7 +64,9 @@ public class JwtService {
     }
 
     public String generateToken(UserDetails userDetails) {
-        return generateToken(Collections.emptyMap(), userDetails);
+        String token = generateToken(Collections.emptyMap(), userDetails);
+        log.info("Generated token in JwtService {}", token);
+        return token;
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {

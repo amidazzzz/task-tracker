@@ -7,12 +7,12 @@ import org.amida.backend.request.SignUpRequest;
 import org.amida.backend.response.ApiResponse;
 import org.amida.backend.service.AuthService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
 @Slf4j
@@ -27,6 +27,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<ApiResponse> login(@RequestBody SignInRequest request){
+        log.info("username: {}, password {}", request.getUsername(), request.getPassword());
         return ResponseEntity.ok(authService.singIn(request));
     }
 }

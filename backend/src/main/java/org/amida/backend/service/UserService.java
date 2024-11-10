@@ -1,6 +1,7 @@
 package org.amida.backend.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.amida.backend.config.UserDetailsImpl;
 import org.amida.backend.exception.EmailAlreadyTakenException;
 import org.amida.backend.exception.InvalidCredentialsException;
@@ -11,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -37,6 +39,7 @@ public class UserService {
     }
 
     public String authUser(String username, String password){
+        log.info("User Service username {}", username);
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("User with username %s not found",
                         username)));
@@ -45,7 +48,9 @@ public class UserService {
             throw new InvalidCredentialsException("Invalid password");
         }
 
-        return jwtService.generateToken(new UserDetailsImpl(user));
+        String token = jwtService.generateToken(new UserDetailsImpl(user));
+        log.info("Generated token {}", token);
+        return token;
     }
 
     public User findUserByUsername(String username) {

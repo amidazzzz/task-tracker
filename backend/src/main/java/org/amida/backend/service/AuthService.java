@@ -5,7 +5,6 @@ import org.amida.backend.model.User;
 import org.amida.backend.request.SignInRequest;
 import org.amida.backend.request.SignUpRequest;
 import org.amida.backend.response.ApiResponse;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service

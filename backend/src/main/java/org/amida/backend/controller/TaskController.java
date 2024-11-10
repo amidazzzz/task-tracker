@@ -5,19 +5,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.amida.backend.model.Task;
 import org.amida.backend.model.User;
 import org.amida.backend.request.TaskRequest;
-import org.amida.backend.response.ApiResponse;
 import org.amida.backend.response.TaskResponse;
 import org.amida.backend.service.TaskService;
 import org.amida.backend.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/task")
 @Slf4j
