@@ -13,7 +13,8 @@ services:
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
     depends_on:
       - postgres
-
+    networks:
+      - app-network
 
   postgres:
     image: postgres:16-alpine
@@ -26,7 +27,25 @@ services:
       - postgres-data:/var/lib/postgresql/data
     ports:
       - "5434:5432"
+    networks:
+      - app-network
 
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    container_name: frontend-cont
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: always
+    networks:
+      - app-network
 
 volumes:
   postgres-data:
+
+networks:
+  app-network:
+    driver: bridge
