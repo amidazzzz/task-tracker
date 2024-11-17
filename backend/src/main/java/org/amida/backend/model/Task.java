@@ -2,10 +2,7 @@ package org.amida.backend.model;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -29,6 +26,7 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "owner_id", referencedColumnName = "id", nullable = false)
+    @ToString.Exclude
     private User owner;
 
     @Enumerated(EnumType.STRING)
