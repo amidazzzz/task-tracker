@@ -1,6 +1,7 @@
 package org.amida.backend.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.amida.backend.exception.TaskNotFoundException;
 import org.amida.backend.model.Task;
 import org.amida.backend.model.User;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TaskService {
@@ -25,25 +27,28 @@ public class TaskService {
                 .owner(user)
                 .build();
 
+        log.info("Created task {}", task);
+        taskRepository.save(task);
+
         return TaskResponse.builder()
                 .message("Task created successfully")
                 .success(true)
                 .build();
     }
 
-    public TaskResponse updateTask(User user, Long taskId, TaskRequest request){
+    public TaskResponse updateTask(User user, Long taskId, TaskRequest request) {
         Long userId = user.getId();
         Task task = taskRepository.findByOwnerIdAndId(userId, taskId);
-        if (task == null){
+        if (task == null) {
             throw new TaskNotFoundException("Task not found");
         }
 
-        task = Task.builder()
-                .title(request.getTitle())
-                .description(request.getDescription())
-                .status(request.getStatus())
-                .build();
+        // Обновляем поля существующей задачи
+        task.setTitle(request.getTitle());
+        task.setDescription(request.getDescription());
+        task.setStatus(request.getStatus());
 
+        // Сохраняем обновленный объект
         taskRepository.save(task);
 
         return TaskResponse.builder()
@@ -71,6 +76,9 @@ public class TaskService {
     }
 
     public List<Task> getAllTasksByUser(User user) {
+        log.info("User id {}", user.getId());
+        List<Task> tasks = taskRepository.findAllByOwnerId(user.getId());
+        log.info("Tasks {}", tasks.toString());
         return taskRepository.findAllByOwnerId(user.getId());
     }
 
