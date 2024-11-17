@@ -1,10 +1,8 @@
 package org.amida.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -31,7 +29,8 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "owner")
+    @ToString.Exclude
+    @JsonIgnore
     private List<Task> tasks;
 
-    // as
 }
