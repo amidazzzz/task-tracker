@@ -32,7 +32,7 @@ public class TaskController {
 
         String username = userDetails.getUsername();
         User user = userService.findUserByUsername(username);
-        log.info("Finding user ");
+        log.info("Request title {}", request.getTitle());
         TaskResponse response = taskService.createTask(user, request);
 
         return ResponseEntity.ok(response);
@@ -60,6 +60,8 @@ public class TaskController {
     public ResponseEntity<List<Task>> getAllTasks(@AuthenticationPrincipal UserDetails userDetails){
         String username = userDetails.getUsername();
         User user = userService.findUserByUsername(username);
+
+        log.info(taskService.getAllTasksByUser(user).toString());
 
         return ResponseEntity.ok(taskService.getAllTasksByUser(user));
     }
