@@ -19,14 +19,13 @@ import java.util.function.Function;
 
 @Slf4j
 @Service
-@PropertySource("compose/")
 public class JwtService {
 
-    @Value("${JWT_SECRET}")
-    private String jwtSecretKey;
+//    @Value("${JWT_SECRET}")
+//    private String jwtSecretKey;
 
-    @Value("${JWT_LIFETIME}")
-    private Duration jwtExpiration;
+//    @Value("${JWT_LIFETIME}")
+//    private Duration jwtExpiration;
 
     public String extractUsername(String token) {
         return extractClaim(token.trim(), Claims::getSubject);
@@ -51,8 +50,9 @@ public class JwtService {
     }
 
     public String generateToken(Map<String, String> extraClaims, UserDetails userDetails) {
+        final long FIFTEEN_MINUTES = 1000 * 60 * 15;
         Date issuedDate = new Date();
-        Date expiredDate = new Date(issuedDate.getTime() + jwtExpiration.toMillis());
+        Date expiredDate = new Date(issuedDate.getTime() + FIFTEEN_MINUTES);
         return Jwts
                 .builder()
                 .claims(extraClaims)
@@ -79,6 +79,7 @@ public class JwtService {
     }
 
     private SecretKey getKey() {
+        String jwtSecretKey = "53A73E5F1C4E0A2D3B5F2D784E6A1B423D6F247D1F6E5C3A596D635A75327855";
         byte[] keyBytes = Decoders.BASE64.decode(jwtSecretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }

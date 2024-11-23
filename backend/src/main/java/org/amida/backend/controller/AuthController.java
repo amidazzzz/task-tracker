@@ -28,6 +28,8 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<ApiResponse> login(@RequestBody SignInRequest request){
         log.info("username: {}, password {}", request.getUsername(), request.getPassword());
-        return ResponseEntity.ok(authService.singIn(request));
+        ApiResponse response = authService.signIn(request);
+        log.info("Generated token {}", response.token());
+        return ResponseEntity.ok(authService.signIn(request));
     }
 }

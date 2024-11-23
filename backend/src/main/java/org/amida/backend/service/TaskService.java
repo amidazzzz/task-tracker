@@ -43,12 +43,10 @@ public class TaskService {
             throw new TaskNotFoundException("Task not found");
         }
 
-        // Обновляем поля существующей задачи
         task.setTitle(request.getTitle());
         task.setDescription(request.getDescription());
         task.setStatus(request.getStatus());
 
-        // Сохраняем обновленный объект
         taskRepository.save(task);
 
         return TaskResponse.builder()

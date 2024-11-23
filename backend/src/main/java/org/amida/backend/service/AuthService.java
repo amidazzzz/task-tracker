@@ -29,7 +29,7 @@ public class AuthService {
                 .build();
     }
 
-    public ApiResponse singIn(SignInRequest request){
+    public ApiResponse signIn(SignInRequest request){
         return ApiResponse.builder()
                 .token(userService.authUser(request.getUsername(), request.getPassword()))
                 .success(true)

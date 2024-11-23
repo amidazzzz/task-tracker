@@ -39,7 +39,6 @@ public class UserService {
     }
 
     public String authUser(String username, String password){
-        log.info("User Service username {}", username);
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("User with username %s not found",
                         username)));
@@ -48,9 +47,7 @@ public class UserService {
             throw new InvalidCredentialsException("Invalid password");
         }
 
-        String token = jwtService.generateToken(new UserDetailsImpl(user));
-        log.info("Generated token {}", token);
-        return token;
+        return jwtService.generateToken(new UserDetailsImpl(user));
     }
 
     public User findUserByUsername(String username) {

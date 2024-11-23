@@ -39,7 +39,10 @@ public class TaskController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TaskResponse> updateTask(@AuthenticationPrincipal UserDetails userDetails, Long taskId, TaskRequest request) {
+    public ResponseEntity<TaskResponse> updateTask(@AuthenticationPrincipal UserDetails userDetails,
+                                                   @PathVariable("id") Long taskId,
+                                                   TaskRequest request) {
+        log.info("Request in Task Controller {}", request);
         String username = userDetails.getUsername();
         User user = userService.findUserByUsername(username);
         TaskResponse response = taskService.updateTask(user, taskId, request);
