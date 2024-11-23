@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Tracker</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            padding-top: 20px;
+        }
+        .task-list {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<h1>Task Tracker</h1>
+
+<!-- Форма для логина -->
+<div class="auth-section">
+    <h2>Login</h2>
+    <form id="loginForm">
+        <label>
+            <input type="text" name="username" placeholder="Username" required>
+        </label>
+        <label>
+            <input type="password" name="password" placeholder="Password" required>
+        </label>
+        <button type="submit">Login</button>
+    </form>
+
+    <h2>Register</h2>
+    <form id="registerForm">
+        <label>
+            <input type="text" name="username" placeholder="Username" required>
+        </label>
+        <label>
+            <input type="text" name="email" placeholder="Email " required>
+        </label>
+        <label>
+            <input type="password" name="password" placeholder="Password" required>
+        </label>
+        <button type="submit">Register</button>
+    </form>
+</div>
+
+<!-- Контейнер для создания задачи -->
+<div class="task-section">
+    <h2>Create New Task</h2>
+    <form id="createTaskForm">
+        <label>
+            <input type="text" name="title" placeholder="Task Title" required>
+        </label>
+        <label>
+            <textarea name="description" placeholder="Task Description"></textarea>
+        </label>
+        <label>
+            <select name="status" required>
+                <option value="IN_EXPECTATION">IN EXPECTATION</option>
+                <option value="IN_PROGRESS">IN PROGRESS</option>
+                <option value="FINISHED">FINISHED</option>
+            </select>
+        </label>
+        <button type="submit">Create Task</button>
+    </form>
+</div>
+
+<!-- Контейнер для отображения задач -->
+<div class="taskForm">
+    <h2>Your Tasks</h2>
+    <ul id="taskList"></ul>
+</div>
+
+
+<div id="message"></div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
