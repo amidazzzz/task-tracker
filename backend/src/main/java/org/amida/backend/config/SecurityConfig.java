@@ -35,15 +35,11 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-//    @Bean
-//    public UserDetailsService userDetailsService() { // refactor: remove UserDetailsService impl Bean
-//        return new UserDetailsServiceImpl(userRepository);
-//    }
 
     @Bean
     public AuthenticationManager authenticationManager() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService); // asd
+        authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
 
         return new ProviderManager(authProvider);
@@ -65,10 +61,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(CsrfConfigurer::disable) // asd
+                .csrf(CsrfConfigurer::disable)
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(HttpMethod.POST,"/api/v1/auth/*").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/v1/task").authenticated() // ref
+                        .requestMatchers(HttpMethod.POST, "/api/v1/task").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/task/{id}").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/task/{id}").authenticated()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
